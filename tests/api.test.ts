@@ -49,6 +49,14 @@ test.describe('Tier 2 - API Tests', () => {
   });
 
   test('DELETE /api/bookings/:id removes a booking', async ({ request }) => {
+    const loginResponse = await request.post('http://localhost:5000/auth/login', {
+      data: {
+        username: process.env.ADMIN_USERNAME || 'admin',
+        password: process.env.ADMIN_PASSWORD || 'admin123',
+      },
+    });
+    const { token } = await loginResponse.json();
+
     // First create a booking to delete
     const createResponse = await request.post('http://localhost:5000/api/bookings', {
       data: {
@@ -64,9 +72,9 @@ test.describe('Tier 2 - API Tests', () => {
 
     const booking = await createResponse.json();
 
-    // Then delete it
     const deleteResponse = await request.delete(
-      `http://localhost:5000/api/bookings/${booking.id}`
+      `http://localhost:5000/api/bookings/${booking.id}`,
+      { headers: { Authorization: `Bearer ${token}` } }
     );
 
     expect(deleteResponse.status()).toBe(204);
