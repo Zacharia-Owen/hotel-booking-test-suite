@@ -7,10 +7,12 @@ test.describe('Tier 2 - API Tests', () => {
 
     expect(response.status()).toBe(200);
 
-    const rooms = await response.json();
-    expect(rooms).toHaveLength(3);
-    expect(rooms[0]).toHaveProperty('name');
-    expect(rooms[0]).toHaveProperty('price');
+    const body= await response.json();
+    expect(body.rooms).toHaveLength(3);
+    expect(body.rooms[0]).toHaveProperty('name');
+    expect(body.rooms[0]).toHaveProperty('price');
+    expect(body.totalRooms).toBe(3);
+    expect(body.page).toBe(1);
   });
 
   test('POST /api/bookings creates a booking successfully', async ({ request }) => {
