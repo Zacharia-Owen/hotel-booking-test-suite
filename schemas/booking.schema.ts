@@ -10,6 +10,14 @@ export const RoomSchema = z.object({
 
 export const RoomsResponseSchema = z.array(RoomSchema);
 
+export const PaginatedRoomsResponseSchema = z.object({
+  rooms: RoomsResponseSchema,
+  page: z.number(),
+  limit: z.number(),
+  totalRooms: z.number(),
+  totalPages: z.number(),
+})
+
 // What the CLIENT sends. No `id` — that's assigned by Postgres on
 // insert and only ever appears in the response, never the request.
 export const BookingRequestSchema = z.object({
@@ -34,6 +42,8 @@ export const BookingResponseSchema = z.object({
   checkout: z.string(),
 });
 
+
+// what the error response looks like. This is used in the tests to validate that the error response has the expected shape.
 export const ErrorResponseSchema = z.object({
   error: z.string().optional(),
   message: z.string().optional(),
