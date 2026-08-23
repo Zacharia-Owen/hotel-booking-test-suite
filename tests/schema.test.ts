@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import {
-  RoomsResponseSchema,
   BookingResponseSchema,
   ErrorResponseSchema,
+  PaginatedRoomsResponseSchema,
 } from '../schemas/booking.schema';
 import { API_BASE_URL } from '../config/apiConfig';
 
@@ -12,7 +12,7 @@ test.describe('Tier 2b - API Contract Validation', () => {
     expect(response.ok()).toBeTruthy();
 
     const body = await response.json();
-    const result = RoomsResponseSchema.safeParse(body);
+    const result = PaginatedRoomsResponseSchema.safeParse(body);
 
     if (!result.success) {
       console.error(result.error.format());
