@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/auth';
 import {
   BookingResponseSchema,
   ErrorResponseSchema,
@@ -86,20 +86,9 @@ test.describe('Tier 2b - API Contract Validation', () => {
     expect(body.error).toBe('No token provided');
   });
 
-  test('GET /api/bookings with a valid token returns booking records', async ({ request }) => {
-    const loginResponse = await request.post(`${API_BASE_URL}/auth/login`, {
-      data: {
-        username: process.env.ADMIN_USERNAME || 'admin',
-        password: process.env.ADMIN_PASSWORD || 'admin123',
-      },
-    });
-    expect(loginResponse.ok()).toBeTruthy();
-
-    const { token } = await loginResponse.json();
-    expect(typeof token).toBe('string');
-
+  test('GET /api/bookings with a valid token returns booking records', async ({ request, authToken }) => {
     const bookingsResponse = await request.get(`${API_BASE_URL}/api/bookings`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${authToken}` }, // authToken should be defined in your test setup
     });
     expect(bookingsResponse.ok()).toBeTruthy();
 
