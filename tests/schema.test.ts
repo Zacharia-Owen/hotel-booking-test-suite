@@ -1,4 +1,5 @@
 import { test, expect } from '../fixtures/auth';
+import { z } from 'zod';
 import {
   BookingResponseSchema,
   ErrorResponseSchema,
@@ -15,7 +16,7 @@ test.describe('Tier 2b - API Contract Validation', () => {
     const result = PaginatedRoomsResponseSchema.safeParse(body);
 
     if (!result.success) {
-      console.error(result.error.format());
+      console.error(z.treeifyError(result.error));
     }
     expect(result.success).toBe(true);
   });
@@ -38,7 +39,7 @@ test.describe('Tier 2b - API Contract Validation', () => {
     const result = BookingResponseSchema.safeParse(body);
 
     if (!result.success) {
-      console.error(result.error.format());
+      console.error(z.treeifyError(result.error));
     }
     expect(result.success).toBe(true);
   });
@@ -54,7 +55,7 @@ test.describe('Tier 2b - API Contract Validation', () => {
     const result = ErrorResponseSchema.safeParse(body);
 
     if (!result.success) {
-      console.error(result.error.format());
+      console.error(z.treeifyError(result.error));
     }
     expect(result.success).toBe(true);
   });
